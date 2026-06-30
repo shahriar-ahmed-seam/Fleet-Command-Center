@@ -36,7 +36,7 @@ export function darkBasemapStyle(): StyleSpecification {
       nightlights: {
         type: 'raster',
         tiles: [
-          'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_Black_Marble/default/2016-01-01/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpg',
+          'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_Black_Marble/default/2016-01-01/GoogleMapsCompatible_Level8/{z}/{y}/{x}.png',
         ],
         tileSize: 256,
         maxzoom: 8,
