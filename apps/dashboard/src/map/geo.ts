@@ -8,6 +8,8 @@ export interface VehicleState {
   heading?: number | null;
   /** Identifier label shown on the marker. */
   label?: string;
+  /** Transport kind, driving the marker icon. */
+  kind?: 'ground' | 'air' | 'sea';
   /** Zones the vehicle is currently inside (for the zone filter). */
   zoneIds?: string[];
   /** Whether the vehicle is active (rendered on the map by default). */

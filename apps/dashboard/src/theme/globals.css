@@ -41,11 +41,11 @@ body {
  * border and depth shadow. `--glass-*` tokens keep the look consistent.
  */
 :root {
-  --glass-bg: color-mix(in srgb, var(--color-surface) 62%, transparent);
-  --glass-bg-strong: color-mix(in srgb, var(--color-surface) 80%, transparent);
-  --glass-border: color-mix(in srgb, #ffffff 12%, transparent);
+  --glass-bg: color-mix(in srgb, var(--color-surface) 58%, transparent);
+  --glass-bg-strong: color-mix(in srgb, var(--color-surface) 78%, transparent);
+  --glass-border: color-mix(in srgb, var(--color-primary) 26%, transparent);
   --glass-blur: blur(16px) saturate(140%);
-  --glass-shadow: 0 8px 30px rgba(3, 6, 18, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --glass-shadow: 0 8px 30px rgba(3, 6, 18, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.07);
 }
 
 .glass {
@@ -128,4 +128,35 @@ button {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Deep-space starfield behind the globe. The operator-supplied /space.jpg sits
+ * on top when present; the procedural stars + glow are the always-on fallback. */
+.fcc-starfield {
+  background-color: #04060f;
+  background-image:
+    url('/space.jpg'),
+    radial-gradient(1.6px 1.6px at 12% 22%, rgba(255, 255, 255, 0.95), transparent 60%),
+    radial-gradient(1.4px 1.4px at 78% 14%, rgba(205, 220, 255, 0.85), transparent 60%),
+    radial-gradient(1px 1px at 33% 67%, rgba(255, 255, 255, 0.7), transparent 60%),
+    radial-gradient(1px 1px at 64% 78%, rgba(185, 205, 255, 0.7), transparent 60%),
+    radial-gradient(1.6px 1.6px at 88% 56%, rgba(255, 255, 255, 0.85), transparent 60%),
+    radial-gradient(1px 1px at 47% 38%, rgba(255, 255, 255, 0.6), transparent 60%),
+    radial-gradient(1.2px 1.2px at 22% 84%, rgba(255, 255, 255, 0.7), transparent 60%),
+    radial-gradient(1100px 700px at 72% 18%, color-mix(in srgb, var(--color-primary) 18%, transparent), transparent 62%),
+    radial-gradient(900px 620px at 12% 96%, color-mix(in srgb, var(--color-accent) 12%, transparent), transparent 58%);
+  background-size: cover, auto, auto, auto, auto, auto, auto, auto, auto, auto;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Subtle violet grade over the planet to match the brand scheme. */
+.fcc-globe-tint {
+  background: radial-gradient(
+    circle at 50% 46%,
+    transparent 30%,
+    color-mix(in srgb, var(--color-primary) 24%, transparent) 72%,
+    transparent 100%
+  );
+  mix-blend-mode: soft-light;
 }

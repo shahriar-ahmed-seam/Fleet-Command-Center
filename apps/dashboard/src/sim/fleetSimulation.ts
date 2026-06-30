@@ -189,6 +189,34 @@ const CITY_FLEETS: Array<{ prefix: string; center: LngLat; count: number; radius
 
 const STATUS_CYCLE = ['On_Delivery', 'On_Delivery', 'Available', 'On_Break'];
 
+// Intercontinental flight loops (planes) and ocean shipping loops (ships).
+const AIR_ROUTES: Record<string, LngLat[]> = {
+  'FLT-301': [[-74, 40.7], [-21, 64], [-0.1, 51.5], [12.5, 41.9], [55.3, 25.2], [31, 30]],
+  'FLT-302': [[139.7, 35.7], [121, 14.6], [103.8, 1.35], [151.2, -33.9], [174.7, -36.8]],
+  'FLT-303': [[-118.2, 34], [-74, 40.7], [-46.6, -23.5], [-77, -12], [-99.1, 19.4]],
+  'FLT-304': [[-0.1, 51.5], [28.9, 41], [72.8, 19], [103.8, 1.35], [55.3, 25.2]],
+};
+const SEA_ROUTES: Record<string, LngLat[]> = {
+  'SHP-401': [[-71, 40.5], [-45, 38], [-12, 38.7], [-12, 33], [-40, 30]],
+  'SHP-402': [[141, 35], [170, 32], [-150, 30], [-130, 34], [-119, 33.7]],
+  'SHP-403': [[56, 25], [63, 18], [70, 8], [104, 1.2], [75, 5]],
+};
+
+const LOOP_SECONDS: Record<string, number> = { ground: 130, air: 230, sea: 340 };
+
+function routeLength(route: LngLat[]): number {
+  let total = 0;
+  for (let i = 0; i < route.length; i++) {
+    total += segmentMetres(route[i], route[(i + 1) % route.length]);
+  }
+  return total;
+}
+
+/** Speed (m/s) that completes the whole loop in the kind's target time. */
+function loopSpeed(route: LngLat[], kind: 'ground' | 'air' | 'sea'): number {
+  return Math.max(8, routeLength(route) / LOOP_SECONDS[kind]);
+}
+
 function buildSpecs(): SimVehicleSpec[] {
   const specs: SimVehicleSpec[] = [];
 
@@ -196,29 +224,33 @@ function buildSpecs(): SimVehicleSpec[] {
     'VAN-014': 'On_Delivery', 'VAN-022': 'Available', 'TRK-003': 'On_Break',
     'VAN-031': 'On_Delivery', 'VAN-045': 'On_Delivery',
   };
-  let i = 0;
   for (const [id, route] of Object.entries(SEATTLE_ROUTES)) {
-    specs.push({
-      vehicleId: id,
-      driverStatus: seattleStatus[id],
-      speed: 120 + (i % 4) * 22,
-      route: catmullRomClosed(route, 16),
-    });
-    i++;
+    const smooth = catmullRomClosed(route, 16);
+    specs.push({ vehicleId: id, driverStatus: seattleStatus[id], speed: loopSpeed(smooth, 'ground'), route: smooth });
   }
 
   const rng = mulberry32(20260630);
   for (const fleet of CITY_FLEETS) {
     for (let v = 0; v < fleet.count; v++) {
-      const loop = makeLoop(fleet.center, fleet.radius, 6 + Math.floor(rng() * 3), rng);
+      const loop = catmullRomClosed(makeLoop(fleet.center, fleet.radius, 6 + Math.floor(rng() * 3), rng), 14);
       specs.push({
         vehicleId: `${fleet.prefix}-${201 + v}`,
         driverStatus: STATUS_CYCLE[v % STATUS_CYCLE.length],
-        speed: 70 + rng() * 120,
-        route: catmullRomClosed(loop, 14),
+        speed: loopSpeed(loop, 'ground'),
+        route: loop,
       });
     }
   }
+
+  for (const [id, route] of Object.entries(AIR_ROUTES)) {
+    const smooth = catmullRomClosed(route, 22);
+    specs.push({ vehicleId: id, driverStatus: 'On_Delivery', speed: loopSpeed(smooth, 'air'), route: smooth });
+  }
+  for (const [id, route] of Object.entries(SEA_ROUTES)) {
+    const smooth = catmullRomClosed(route, 20);
+    specs.push({ vehicleId: id, driverStatus: 'On_Delivery', speed: loopSpeed(smooth, 'sea'), route: smooth });
+  }
+
   return specs;
 }
 

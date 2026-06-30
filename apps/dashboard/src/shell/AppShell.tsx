@@ -1,6 +1,5 @@
 import React from 'react';
 import { TopNav } from './TopNav';
-import { LeftRail } from './LeftRail';
 import { useHashRoute } from './routing';
 import type { Role, RouteId } from '../auth/rbac';
 import { SocketClient } from '../realtime/socketClient';
@@ -120,19 +119,15 @@ export function AppShell({
       <TopNav
         connection={connection}
         role={role}
+        active={route}
+        onNavigate={navigate}
         userName={userName}
-        search={search}
-        onSearchChange={setSearch}
-        onSearchSubmit={() => navigate('deliveries')}
         onHome={onHome}
         simulation={simulation}
       />
-      <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
-        <LeftRail role={role} active={route} onNavigate={navigate} />
-        <main style={{ position: 'relative', flex: 1, minWidth: 0, minHeight: 0, overflow: 'hidden' }}>
-          {renderRoute(route)}
-        </main>
-      </div>
+      <main style={{ position: 'relative', flex: 1, minWidth: 0, minHeight: 0, overflow: 'hidden' }}>
+        {renderRoute(route)}
+      </main>
     </div>
   );
 }

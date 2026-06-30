@@ -2,14 +2,15 @@ import React from 'react';
 import { SocketEvent, type PositionEvent } from '@fleet/contracts';
 import { SocketClient } from '../realtime/socketClient';
 import { TRACE_WINDOW_MS, type TracePing, type VehicleState } from './geo';
+import { kindFromId } from './mapStyle';
 import type { ZonePolygon } from './LiveMap';
 
-/** Demo seed so the map is populated before live data flows (replaceable via REST). */
+/** Demo seed so the map is populated before live data flows. */
 const SEED_VEHICLES: VehicleState[] = [
-  { vehicleId: 'VAN-014', lat: 47.6062, lng: -122.3321, driverStatus: 'On_Delivery', heading: 45, label: 'VAN-014', active: true, zoneIds: ['zone-dt'] },
-  { vehicleId: 'VAN-022', lat: 47.6205, lng: -122.3493, driverStatus: 'Available', heading: 200, label: 'VAN-022', active: true },
-  { vehicleId: 'TRK-003', lat: 47.5952, lng: -122.3316, driverStatus: 'On_Break', heading: 310, label: 'TRK-003', active: true, zoneIds: ['zone-sodo'] },
-  { vehicleId: 'VAN-031', lat: 47.6145, lng: -122.3201, driverStatus: 'On_Delivery', heading: 120, label: 'VAN-031', active: true },
+  { vehicleId: 'VAN-014', lat: 47.6062, lng: -122.3321, driverStatus: 'On_Delivery', heading: 45, label: 'VAN-014', kind: 'ground', active: true, zoneIds: ['zone-dt'] },
+  { vehicleId: 'VAN-022', lat: 47.6205, lng: -122.3493, driverStatus: 'Available', heading: 200, label: 'VAN-022', kind: 'ground', active: true },
+  { vehicleId: 'TRK-003', lat: 47.5952, lng: -122.3316, driverStatus: 'On_Break', heading: 310, label: 'TRK-003', kind: 'ground', active: true, zoneIds: ['zone-sodo'] },
+  { vehicleId: 'VAN-031', lat: 47.6145, lng: -122.3201, driverStatus: 'On_Delivery', heading: 120, label: 'VAN-031', kind: 'ground', active: true },
 ];
 
 const SEED_ZONES: ZonePolygon[] = [
@@ -89,6 +90,7 @@ export function useFleetState(client: SocketClient | null): FleetState {
           heading: p.telemetry?.heading ?? existing?.heading ?? null,
           driverStatus: existing?.driverStatus ?? 'On_Delivery',
           label: existing?.label ?? p.vehicleId,
+          kind: existing?.kind ?? kindFromId(p.vehicleId),
           active: true,
           zoneIds: existing?.zoneIds,
         });

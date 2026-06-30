@@ -68,9 +68,9 @@ export const spacing = {
  * Border-radius tokens (px). `pill` (9999) yields fully rounded pills/avatars.
  */
 export const radius = {
-  control: 6,
-  card: 10,
-  modal: 16,
+  control: 8,
+  card: 16,
+  modal: 20,
   pill: 9999,
 } as const;
 
