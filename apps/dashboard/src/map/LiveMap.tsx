@@ -4,6 +4,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 import { driverStatusVar } from '../theme/tokens';
 import { resolveMapStyle, buildVehicleMarkerEl } from './mapStyle';
+import { createGlobeSpin } from './globeSpin';
 import {
   windowTrace,
   boundsOf,
@@ -32,6 +33,7 @@ export interface LiveMapProps {
 
 const TRACE_SOURCE = 'selected-trace';
 const ZONE_SOURCE = 'zones';
+const FLEET_CENTER: [number, number] = [-122.3321, 47.6062];
 
 function readCssVar(name: string, fallback: string): string {
   if (typeof window === 'undefined') return fallback;
@@ -39,7 +41,7 @@ function readCssVar(name: string, fallback: string): string {
   return v || fallback;
 }
 
-/** The live operations map. */
+/** The live operations map: a 3D globe that flies in to the fleet's tracks. */
 export function LiveMap({
   vehicles,
   zones = [],
@@ -51,12 +53,12 @@ export function LiveMap({
   const containerRef = React.useRef<HTMLDivElement>(null);
   const mapRef = React.useRef<MlMap | null>(null);
   const markersRef = React.useRef<Map<string, maplibregl.Marker>>(new Map());
+  const spinRef = React.useRef<ReturnType<typeof createGlobeSpin> | null>(null);
   const [ready, setReady] = React.useState(false);
   const [failed, setFailed] = React.useState(false);
   const onSelectRef = React.useRef(onSelectVehicle);
   onSelectRef.current = onSelectVehicle;
 
-  // --- create the map once ----------------------------------------------
   React.useEffect(() => {
     if (!containerRef.current) return;
     let map: MlMap;
@@ -64,9 +66,12 @@ export function LiveMap({
       map = new maplibregl.Map({
         container: containerRef.current,
         style: resolveMapStyle(),
-        center: [-122.3321, 47.6062],
-        zoom: 11,
+        center: FLEET_CENTER,
+        zoom: 2.2,
+        bearing: -18,
+        pitch: 0,
         attributionControl: false,
+        maxPitch: 70,
       });
     } catch {
       setFailed(true);
@@ -74,6 +79,15 @@ export function LiveMap({
     }
     mapRef.current = map;
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+    map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-left');
+
+    const spin = createGlobeSpin(map, {
+      secondsPerRevolution: 90,
+      maxSpinZoom: 5,
+      slowSpinZoom: 3,
+    });
+    spinRef.current = spin;
+
     map.on('load', () => {
       const accent = readCssVar('--color-accent', '#14B8A6');
       map.addSource(ZONE_SOURCE, {
@@ -90,10 +104,9 @@ export function LiveMap({
         id: 'zone-outline',
         type: 'line',
         source: ZONE_SOURCE,
-        paint: { 'line-color': accent, 'line-opacity': 0.6, 'line-width': 1.5 },
+        paint: { 'line-color': accent, 'line-opacity': 0.65, 'line-width': 1.5 },
       });
 
-      // Selected-vehicle path trace: a single line with a fade toward older
       const info = readCssVar('--color-info', '#38BDF8');
       map.addSource(TRACE_SOURCE, {
         type: 'geojson',
@@ -111,17 +124,31 @@ export function LiveMap({
             'interpolate',
             ['linear'],
             ['line-progress'],
-            0,
-            'rgba(56,189,248,0.05)',
-            1,
-            info,
+            0, 'rgba(56,189,248,0.05)',
+            1, info,
           ],
         },
       });
+
       setReady(true);
+
+      // Cinematic reveal: hold on the spinning globe, then fly down to the fleet.
+      spin.start();
+      window.setTimeout(() => {
+        map.flyTo({
+          center: FLEET_CENTER,
+          zoom: 11,
+          bearing: 0,
+          duration: 4200,
+          curve: 1.6,
+          essential: true,
+        });
+      }, 1400);
     });
 
     return () => {
+      spin.destroy();
+      spinRef.current = null;
       markersRef.current.forEach((m) => m.remove());
       markersRef.current.clear();
       map.remove();
@@ -129,7 +156,6 @@ export function LiveMap({
     };
   }, []);
 
-  // --- reconcile vehicle markers ----------------------------------------
   React.useEffect(() => {
     const map = mapRef.current;
     if (!map || !ready) return;
@@ -171,7 +197,6 @@ export function LiveMap({
     }
   }, [vehicles, selectedVehicleId, ready]);
 
-  // --- update zone overlay ----------------------------------------------
   React.useEffect(() => {
     const map = mapRef.current;
     if (!map || !ready) return;
@@ -186,16 +211,13 @@ export function LiveMap({
     });
   }, [zones, ready]);
 
-  // --- update selected path trace ---------------------------------------
   React.useEffect(() => {
     const map = mapRef.current;
     if (!map || !ready) return;
     const src = map.getSource(TRACE_SOURCE) as maplibregl.GeoJSONSource | undefined;
     if (!src) return;
 
-    const ordered = selectedVehicleId
-      ? windowTrace(tracePings, now ?? Date.now())
-      : [];
+    const ordered = selectedVehicleId ? windowTrace(tracePings, now ?? Date.now()) : [];
     const coordinates = ordered.map((p) => [p.lng, p.lat] as [number, number]);
     src.setData({
       type: 'Feature',
@@ -203,18 +225,28 @@ export function LiveMap({
       properties: {},
     });
 
-    // Frame the trace when a vehicle is first selected.
     if (coordinates.length > 1) {
       const b = boundsOf(ordered);
       if (b) {
         map.fitBounds([[b[0], b[1]], [b[2], b[3]]], {
-          padding: 80,
+          padding: 90,
           maxZoom: 14,
-          duration: 600,
+          duration: 700,
         });
       }
     }
   }, [tracePings, selectedVehicleId, ready, now]);
+
+  const viewGlobe = () => {
+    const map = mapRef.current;
+    if (!map) return;
+    map.flyTo({ center: FLEET_CENTER, zoom: 2.4, bearing: -18, duration: 2600, essential: true });
+  };
+  const viewFleet = () => {
+    const map = mapRef.current;
+    if (!map) return;
+    map.flyTo({ center: FLEET_CENTER, zoom: 11, bearing: 0, duration: 2600, essential: true });
+  };
 
   if (failed) {
     return (
@@ -236,9 +268,44 @@ export function LiveMap({
   }
 
   return (
-    <div
-      ref={containerRef}
-      style={{ position: 'absolute', inset: 0, background: 'var(--color-bg)' }}
-    />
+    <>
+      <div ref={containerRef} style={{ position: 'absolute', inset: 0, background: '#0b0f14' }} />
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 'var(--space-4)',
+          right: 'var(--space-4)',
+          zIndex: 2,
+          display: 'flex',
+          gap: 'var(--space-2)',
+        }}
+      >
+        <MapPill onClick={viewGlobe} label="🌐 Globe" />
+        <MapPill onClick={viewFleet} label="📍 Fleet" />
+      </div>
+    </>
+  );
+}
+
+function MapPill({ onClick, label }: { onClick: () => void; label: string }): React.ReactElement {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        height: 32,
+        padding: '0 var(--space-3)',
+        borderRadius: 'var(--radius-pill)',
+        background: 'color-mix(in srgb, var(--color-surface) 88%, transparent)',
+        border: '1px solid var(--color-border)',
+        color: 'var(--color-text)',
+        fontSize: 'var(--font-size-xs)',
+        fontWeight: 600,
+        cursor: 'pointer',
+        backdropFilter: 'blur(6px)',
+      }}
+    >
+      {label}
+    </button>
   );
 }

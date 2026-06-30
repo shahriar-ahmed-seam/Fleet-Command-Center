@@ -1,9 +1,9 @@
 import React from 'react';
+import { GlobeHero } from './GlobeHero';
 
 export interface LandingPageProps {
   onEnter: () => void;
   githubUrl?: string;
-  heroSrc?: string;
 }
 
 const FEATURES = [
@@ -35,25 +35,19 @@ const STACK = ['Go', 'Node · NestJS', 'Python · OR-Tools', 'React · TypeScrip
 export function LandingPage({
   onEnter,
   githubUrl = 'https://github.com/shahriar-ahmed-seam/Fleet-Command-Center',
-  heroSrc = '/hero.png',
 }: LandingPageProps): React.ReactElement {
   return (
     <div style={{ background: 'var(--color-bg)', color: 'var(--color-text)', minHeight: '100vh' }}>
       {/* Hero */}
-      <section style={{ position: 'relative', minHeight: '92vh', display: 'flex', flexDirection: 'column' }}>
-        <img
-          src={heroSrc}
-          alt=""
-          aria-hidden="true"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-        />
+      <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <GlobeHero />
         <div
           aria-hidden="true"
           style={{
             position: 'absolute',
             inset: 0,
             background:
-              'linear-gradient(180deg, rgba(15,20,25,0.72) 0%, rgba(15,20,25,0.55) 38%, rgba(15,20,25,0.96) 100%)',
+              'linear-gradient(90deg, rgba(15,20,25,0.95) 0%, rgba(15,20,25,0.7) 38%, rgba(15,20,25,0.15) 66%, rgba(15,20,25,0.45) 100%), linear-gradient(180deg, rgba(15,20,25,0.4) 0%, rgba(15,20,25,0) 30%, rgba(15,20,25,0) 65%, rgba(15,20,25,0.98) 100%)',
           }}
         />
 

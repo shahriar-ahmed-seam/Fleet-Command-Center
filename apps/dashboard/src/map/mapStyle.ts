@@ -2,13 +2,31 @@ import type { StyleSpecification } from 'maplibre-gl';
 
 /**
  * A real dark basemap built from CARTO's free "dark matter" raster tiles
- * (OpenStreetMap data, no API key). The background colour matches the app
- * shell so tiles fade in over the theme instead of a white flash.
+ * (OpenStreetMap data, no API key), rendered on a 3D globe with an atmosphere
+ * glow. The background colour matches the app shell so tiles fade in over the
+ * theme instead of a white flash.
  */
 export function darkBasemapStyle(): StyleSpecification {
   return {
     version: 8,
-    name: 'fleet-operations-dark',
+    name: 'fleet-operations-globe',
+    projection: { type: 'globe' },
+    sky: {
+      'sky-color': '#0a1320',
+      'sky-horizon-blend': 0.6,
+      'horizon-color': '#274060',
+      'horizon-fog-blend': 0.6,
+      'fog-color': '#0F1419',
+      'fog-ground-blend': 0.4,
+      'atmosphere-blend': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        0, 1,
+        7, 0.6,
+        11, 0,
+      ],
+    },
     sources: {
       basemap: {
         type: 'raster',
@@ -27,21 +45,21 @@ export function darkBasemapStyle(): StyleSpecification {
       {
         id: 'background',
         type: 'background',
-        paint: { 'background-color': '#0F1419' },
+        paint: { 'background-color': '#0b0f14' },
       },
       {
         id: 'basemap',
         type: 'raster',
         source: 'basemap',
-        paint: { 'raster-opacity': 0.92 },
+        paint: { 'raster-opacity': 0.95 },
       },
     ],
-  };
+  } as StyleSpecification;
 }
 
 /**
  * Resolve the map style: an operator-provided style URL when configured,
- * otherwise the dark raster basemap.
+ * otherwise the dark globe basemap.
  */
 export function resolveMapStyle(): string | StyleSpecification {
   const url =

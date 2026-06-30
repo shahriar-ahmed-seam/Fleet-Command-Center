@@ -24,6 +24,9 @@ build/
 .DS_Store
 .idea/
 
+# Local design assets (templates, demo video)
+apps/assets/
+
 # Vercel
 .vercel/
 

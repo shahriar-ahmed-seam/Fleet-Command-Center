@@ -4,6 +4,7 @@ services/streaming
 services/optimizer
 apps/driver
 apps/customer
+apps/assets
 .kiro
 **/__pycache__
 **/.venv
