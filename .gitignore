@@ -30,3 +30,5 @@ build/
 # Flutter generated
 **/.flutter-plugins
 **/.flutter-plugins-dependencies
+.vercel
+.env*

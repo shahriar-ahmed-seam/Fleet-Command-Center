@@ -13,7 +13,7 @@
 
 </div>
 
-> **Live demo:** _deployed dashboard URL added after first deploy._ The hosted dashboard runs on seeded fleet data so the live map, path tracing, and operations console are explorable without a backend.
+> **Live demo:** **https://fleet-command-center-eight.vercel.app** — the hosted dashboard runs on seeded fleet data so the live map, path tracing, and operations console are explorable without a backend.
 
 ---
 
