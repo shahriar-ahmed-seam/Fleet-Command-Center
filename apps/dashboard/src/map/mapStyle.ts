@@ -1,17 +1,39 @@
 import type { StyleSpecification } from 'maplibre-gl';
 
-/** A self-contained, offline dark base style (no tiles, no API key). */
-export function blankDarkStyle(): StyleSpecification {
+/**
+ * A real dark basemap built from CARTO's free "dark matter" raster tiles
+ * (OpenStreetMap data, no API key). The background colour matches the app
+ * shell so tiles fade in over the theme instead of a white flash.
+ */
+export function darkBasemapStyle(): StyleSpecification {
   return {
     version: 8,
     name: 'fleet-operations-dark',
-    // Empty glyphs/sources keep the style fully self-contained.
-    sources: {},
+    sources: {
+      basemap: {
+        type: 'raster',
+        tiles: [
+          'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
+          'https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
+          'https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
+          'https://d.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
+        ],
+        tileSize: 256,
+        attribution:
+          '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/attributions">CARTO</a>',
+      },
+    },
     layers: [
       {
         id: 'background',
         type: 'background',
         paint: { 'background-color': '#0F1419' },
+      },
+      {
+        id: 'basemap',
+        type: 'raster',
+        source: 'basemap',
+        paint: { 'raster-opacity': 0.92 },
       },
     ],
   };
@@ -19,16 +41,15 @@ export function blankDarkStyle(): StyleSpecification {
 
 /**
  * Resolve the map style: an operator-provided style URL when configured,
- * otherwise the self-contained dark base.
+ * otherwise the dark raster basemap.
  */
 export function resolveMapStyle(): string | StyleSpecification {
   const url =
     typeof import.meta !== 'undefined'
       ? (import.meta as { env?: Record<string, string> }).env?.VITE_MAP_STYLE_URL
       : undefined;
-  return url && url.length > 0 ? url : blankDarkStyle();
+  return url && url.length > 0 ? url : darkBasemapStyle();
 }
-
 
 export function buildVehicleMarkerEl(opts: {
   statusVar: string;

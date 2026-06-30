@@ -7,7 +7,6 @@ import { SocketClient } from '../realtime/socketClient';
 import { useConnectionState } from '../realtime/useConnection';
 import { MapView } from '../map/MapView';
 import { useFleetState } from '../map/useFleetState';
-import { Panel } from '../components/Card';
 import {
   ActivityFeed,
   DriversView,
@@ -15,27 +14,21 @@ import {
   useOperationsState,
   type VehiclePosition,
 } from '../operations';
+import { VehiclesView } from '../views/VehiclesView';
+import { ZonesView } from '../views/ZonesView';
+import { ReportsView } from '../views/ReportsView';
+import { simulationTransportFactory } from '../sim/simulationTransport';
 
 export interface AppShellProps {
   role: Role;
   userName?: string;
-  /** Streaming_Service WebSocket URL. */
+  /** Streaming service WebSocket URL (used when not in simulation mode). */
   streamingUrl?: string;
-  
   token?: string;
-}
-
-/** Placeholder for views delivered in later tasks, styled on-brand. */
-function ComingSoon({ title }: { title: string }): React.ReactElement {
-  return (
-    <div style={{ padding: 'var(--space-5)', height: '100%' }}>
-      <Panel title={title}>
-        <p style={{ color: 'var(--color-text-muted)', fontSize: 'var(--font-size-sm)' }}>
-          This view is part of the dispatch console and is delivered in a later task.
-        </p>
-      </Panel>
-    </div>
-  );
+  /** When true, live data is produced by the in-browser fleet simulation. */
+  simulation?: boolean;
+  /** Navigate back to the landing view. */
+  onHome?: () => void;
 }
 
 /** The composed dashboard shell. */
@@ -44,11 +37,16 @@ export function AppShell({
   userName,
   streamingUrl = 'ws://localhost:4000/stream',
   token,
+  simulation = false,
+  onHome,
 }: AppShellProps): React.ReactElement {
-  // One SocketClient for the app lifetime.
   const clientRef = React.useRef<SocketClient | null>(null);
   if (clientRef.current === null && typeof window !== 'undefined') {
-    clientRef.current = new SocketClient({ url: streamingUrl, token });
+    clientRef.current = new SocketClient({
+      url: simulation ? 'sim://local' : streamingUrl,
+      token,
+      transportFactory: simulation ? simulationTransportFactory : undefined,
+    });
   }
   const client = clientRef.current;
   React.useEffect(() => () => client?.disconnect(), [client]);
@@ -107,13 +105,13 @@ export function AppShell({
           />
         );
       case 'vehicles':
-        return <ComingSoon title="Vehicles" />;
+        return <VehiclesView vehicles={fleet.vehicles} drivers={ops.drivers} />;
       case 'zones':
-        return <ComingSoon title="Zones" />;
+        return <ZonesView zones={fleet.zones} vehicles={fleet.vehicles} />;
       case 'reports':
-        return <ComingSoon title="Reports" />;
+        return <ReportsView drivers={ops.drivers} deliveries={ops.deliveries} />;
       default:
-        return <ComingSoon title="Dashboard" />;
+        return <MapView vehicles={fleet.vehicles} zones={fleet.zones} tracesByVehicle={fleet.tracesByVehicle} />;
     }
   };
 
@@ -126,6 +124,8 @@ export function AppShell({
         search={search}
         onSearchChange={setSearch}
         onSearchSubmit={() => navigate('deliveries')}
+        onHome={onHome}
+        simulation={simulation}
       />
       <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
         <LeftRail role={role} active={route} onNavigate={navigate} />

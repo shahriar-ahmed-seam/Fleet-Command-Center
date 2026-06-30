@@ -11,6 +11,8 @@ export interface TopNavProps {
   search: string;
   onSearchChange: (value: string) => void;
   onSearchSubmit?: (value: string) => void;
+  onHome?: () => void;
+  simulation?: boolean;
 }
 
 /** The dashboard's top navigation bar. */
@@ -21,6 +23,8 @@ export function TopNav({
   search,
   onSearchChange,
   onSearchSubmit,
+  onHome,
+  simulation = false,
 }: TopNavProps): React.ReactElement {
   return (
     <header
@@ -35,9 +39,22 @@ export function TopNav({
         flex: '0 0 auto',
       }}
     >
-      <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center' }}>
+      <button
+        type="button"
+        onClick={onHome}
+        aria-label="Back to home"
+        style={{
+          flex: '0 0 auto',
+          display: 'flex',
+          alignItems: 'center',
+          background: 'transparent',
+          border: 'none',
+          padding: 0,
+          cursor: onHome ? 'pointer' : 'default',
+        }}
+      >
         <BrandLogo />
-      </div>
+      </button>
 
       <form
         role="search"
@@ -82,7 +99,28 @@ export function TopNav({
         </div>
       </form>
 
-      <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
+      <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+        {simulation && (
+          <span
+            title="Running on the in-browser fleet simulation"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              height: 28,
+              padding: '0 var(--space-3)',
+              borderRadius: 'var(--radius-pill)',
+              background: 'color-mix(in srgb, var(--color-accent) 16%, transparent)',
+              border: '1px solid color-mix(in srgb, var(--color-accent) 40%, transparent)',
+              color: 'var(--color-accent)',
+              fontSize: 'var(--font-size-xs)',
+              fontWeight: 600,
+              letterSpacing: 0.3,
+            }}
+          >
+            ◈ Simulation
+          </span>
+        )}
         <ConnectionIndicator state={connection} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
           <span
