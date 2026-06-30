@@ -1,20 +1,22 @@
+// AUTO-GENERATED from @fleet/design-tokens. Do not edit by hand.
 import 'package:flutter/material.dart';
 
+/// Semantic color tokens.
 class FleetColors {
   FleetColors._();
-  static const Color bg = Color(0xFF0F1419);
-  static const Color surface = Color(0xFF1A2230);
-  static const Color surfaceAlt = Color(0xFF232E40);
-  static const Color border = Color(0xFF2E3A4E);
-  static const Color text = Color(0xFFE8EDF4);
-  static const Color textMuted = Color(0xFF9AA7B8);
-  static const Color primary = Color(0xFF3B82F6);
-  static const Color primaryHover = Color(0xFF2E6FD6);
-  static const Color accent = Color(0xFF14B8A6);
-  static const Color success = Color(0xFF22C55E);
-  static const Color warning = Color(0xFFF59E0B);
-  static const Color danger = Color(0xFFEF4444);
-  static const Color info = Color(0xFF38BDF8);
+  static const Color bg = Color(0xFF070A16);
+  static const Color surface = Color(0xFF11152E);
+  static const Color surfaceAlt = Color(0xFF1A2042);
+  static const Color border = Color(0xFF2C3360);
+  static const Color text = Color(0xFFECEEFA);
+  static const Color textMuted = Color(0xFF9AA2CC);
+  static const Color primary = Color(0xFF7C84F2);
+  static const Color primaryHover = Color(0xFF6A72E6);
+  static const Color accent = Color(0xFF58D6F2);
+  static const Color success = Color(0xFF3FE0A0);
+  static const Color warning = Color(0xFFECA64C);
+  static const Color danger = Color(0xFFEF4757);
+  static const Color info = Color(0xFF8FB4FB);
 }
 
 /// Typography tokens: families, 1.25 type scale, weights, line heights.
@@ -75,6 +77,7 @@ class FleetShadows {
   static const List<BoxShadow> lg = [BoxShadow(color: Color(0x73000000), offset: Offset(0, 12), blurRadius: 32)];
 }
 
+/// Driver_Status → color (mirrors web --status-driver-*).
 const Map<String, Color> driverStatusColor = {
   'Offline': FleetColors.danger,
   'Available': FleetColors.success,
@@ -82,6 +85,7 @@ const Map<String, Color> driverStatusColor = {
   'On_Break': FleetColors.warning,
 };
 
+/// Delivery_Status → color (mirrors web --status-delivery-*).
 const Map<String, Color> deliveryStatusColor = {
   'Created': FleetColors.textMuted,
   'Assigned': FleetColors.accent,

@@ -21,7 +21,12 @@ body,
 
 body {
   margin: 0;
-  background: var(--color-bg);
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(1100px 700px at 78% -8%, color-mix(in srgb, var(--color-primary) 22%, transparent), transparent 60%),
+    radial-gradient(900px 600px at 5% 110%, color-mix(in srgb, var(--color-accent) 16%, transparent), transparent 55%),
+    radial-gradient(700px 500px at 110% 60%, color-mix(in srgb, var(--color-info) 12%, transparent), transparent 50%);
+  background-attachment: fixed;
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: var(--font-size-base);
@@ -29,6 +34,34 @@ body {
   line-height: var(--line-height-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/*
+ * Glassmorphism surfaces: translucent, blurred panels with a soft top-light
+ * border and depth shadow. `--glass-*` tokens keep the look consistent.
+ */
+:root {
+  --glass-bg: color-mix(in srgb, var(--color-surface) 62%, transparent);
+  --glass-bg-strong: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  --glass-border: color-mix(in srgb, #ffffff 12%, transparent);
+  --glass-blur: blur(16px) saturate(140%);
+  --glass-shadow: 0 8px 30px rgba(3, 6, 18, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.glass-strong {
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
 }
 
 h1,

@@ -34,11 +34,14 @@ export function LeftRail({
         flexDirection: 'column',
         width: 232,
         flex: '0 0 auto',
-        background: 'var(--color-surface)',
-        borderRight: '1px solid var(--color-border)',
+        background: 'var(--glass-bg-strong)',
+        backdropFilter: 'var(--glass-blur)',
+        WebkitBackdropFilter: 'var(--glass-blur)',
+        borderRight: '1px solid var(--glass-border)',
         padding: 'var(--space-4) var(--space-3)',
         gap: 'var(--space-1)',
         overflow: 'auto',
+        zIndex: 4,
       }}
     >
       {routes.map((r) => {

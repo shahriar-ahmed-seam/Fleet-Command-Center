@@ -34,9 +34,12 @@ export function TopNav({
         gap: 'var(--space-4)',
         height: 60,
         padding: '0 var(--space-5)',
-        background: 'var(--color-surface)',
-        borderBottom: '1px solid var(--color-border)',
+        background: 'var(--glass-bg-strong)',
+        backdropFilter: 'var(--glass-blur)',
+        WebkitBackdropFilter: 'var(--glass-blur)',
+        borderBottom: '1px solid var(--glass-border)',
         flex: '0 0 auto',
+        zIndex: 5,
       }}
     >
       <button

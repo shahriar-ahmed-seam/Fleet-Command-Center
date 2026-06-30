@@ -1,6 +1,15 @@
 {
-  "primary": "#3B82F6",
-  "accent": "#14B8A6",
-  "bg": "#0F1419",
-  "surface": "#1A2230"
+  "bg": "#070A16",
+  "surface": "#11152E",
+  "surfaceAlt": "#1A2042",
+  "border": "#2C3360",
+  "text": "#ECEEFA",
+  "textMuted": "#9AA2CC",
+  "primary": "#7C84F2",
+  "primaryHover": "#6A72E6",
+  "accent": "#58D6F2",
+  "success": "#3FE0A0",
+  "warning": "#ECA64C",
+  "danger": "#EF4757",
+  "info": "#8FB4FB"
 }

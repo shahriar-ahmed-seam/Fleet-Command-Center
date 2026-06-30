@@ -132,18 +132,19 @@ export function LiveMap({
 
       setReady(true);
 
-      // Cinematic reveal: hold on the spinning globe, then fly down to the fleet.
+      // Cinematic reveal: hold on the spinning globe (with worldwide trackers),
+      // then fly down to the fleet to show the live tracks.
       spin.start();
       window.setTimeout(() => {
         map.flyTo({
           center: FLEET_CENTER,
-          zoom: 11,
+          zoom: 10.4,
           bearing: 0,
-          duration: 4200,
-          curve: 1.6,
+          duration: 5200,
+          curve: 1.7,
           essential: true,
         });
-      }, 1400);
+      }, 2600);
     });
 
     return () => {

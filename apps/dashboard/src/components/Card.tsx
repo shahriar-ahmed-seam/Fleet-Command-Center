@@ -16,10 +16,12 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(function Card(
     <div
       ref={ref}
       style={{
-        background: 'var(--color-surface)',
-        border: '1px solid var(--color-border)',
+        background: 'var(--glass-bg)',
+        backdropFilter: 'var(--glass-blur)',
+        WebkitBackdropFilter: 'var(--glass-blur)',
+        border: '1px solid var(--glass-border)',
         borderRadius: 'var(--radius-card)',
-        boxShadow: elevation === 'none' ? 'none' : `var(--shadow-${elevation})`,
+        boxShadow: elevation === 'none' ? 'none' : 'var(--glass-shadow)',
         padding: `var(--space-${padding})`,
         ...style,
       }}
@@ -51,10 +53,12 @@ export const Panel = React.forwardRef<HTMLDivElement, PanelProps>(function Panel
         display: 'flex',
         flexDirection: 'column',
         minHeight: 0,
-        background: 'var(--color-surface)',
-        border: '1px solid var(--color-border)',
+        background: 'var(--glass-bg)',
+        backdropFilter: 'var(--glass-blur)',
+        WebkitBackdropFilter: 'var(--glass-blur)',
+        border: '1px solid var(--glass-border)',
         borderRadius: 'var(--radius-card)',
-        boxShadow: 'var(--shadow-sm)',
+        boxShadow: 'var(--glass-shadow)',
         overflow: 'hidden',
         ...style,
       }}

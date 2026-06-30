@@ -1,9 +1,9 @@
 import React from 'react';
-import { GlobeHero } from './GlobeHero';
 
 export interface LandingPageProps {
   onEnter: () => void;
   githubUrl?: string;
+  heroSrc?: string;
 }
 
 const FEATURES = [
@@ -35,19 +35,25 @@ const STACK = ['Go', 'Node · NestJS', 'Python · OR-Tools', 'React · TypeScrip
 export function LandingPage({
   onEnter,
   githubUrl = 'https://github.com/shahriar-ahmed-seam/Fleet-Command-Center',
+  heroSrc = '/hero.png',
 }: LandingPageProps): React.ReactElement {
   return (
     <div style={{ background: 'var(--color-bg)', color: 'var(--color-text)', minHeight: '100vh' }}>
       {/* Hero */}
       <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        <GlobeHero />
+        <img
+          src={heroSrc}
+          alt=""
+          aria-hidden="true"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+        />
         <div
           aria-hidden="true"
           style={{
             position: 'absolute',
             inset: 0,
             background:
-              'linear-gradient(90deg, rgba(15,20,25,0.95) 0%, rgba(15,20,25,0.7) 38%, rgba(15,20,25,0.15) 66%, rgba(15,20,25,0.45) 100%), linear-gradient(180deg, rgba(15,20,25,0.4) 0%, rgba(15,20,25,0) 30%, rgba(15,20,25,0) 65%, rgba(15,20,25,0.98) 100%)',
+              'linear-gradient(90deg, rgba(7,10,22,0.94) 0%, rgba(7,10,22,0.7) 40%, rgba(7,10,22,0.25) 70%, rgba(7,10,22,0.55) 100%), linear-gradient(180deg, rgba(7,10,22,0.3) 0%, rgba(7,10,22,0) 35%, rgba(7,10,22,0) 60%, rgba(7,10,22,0.98) 100%)',
           }}
         />
 
@@ -59,7 +65,11 @@ export function LandingPage({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: 'var(--space-5) clamp(20px, 6vw, 80px)',
+            padding: 'var(--space-4) clamp(20px, 6vw, 80px)',
+            background: 'var(--glass-bg)',
+            backdropFilter: 'var(--glass-blur)',
+            WebkitBackdropFilter: 'var(--glass-blur)',
+            borderBottom: '1px solid var(--glass-border)',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -164,9 +174,12 @@ export function LandingPage({
               key={f.title}
               style={{
                 padding: 'var(--space-5)',
-                background: 'var(--color-surface)',
-                border: '1px solid var(--color-border)',
+                background: 'var(--glass-bg)',
+                backdropFilter: 'var(--glass-blur)',
+                WebkitBackdropFilter: 'var(--glass-blur)',
+                border: '1px solid var(--glass-border)',
                 borderRadius: 'var(--radius-card)',
+                boxShadow: 'var(--glass-shadow)',
               }}
             >
               <div
@@ -197,9 +210,12 @@ export function LandingPage({
         <div
           style={{
             padding: 'var(--space-5)',
-            background: 'var(--color-surface)',
-            border: '1px solid var(--color-border)',
+            background: 'var(--glass-bg)',
+            backdropFilter: 'var(--glass-blur)',
+            WebkitBackdropFilter: 'var(--glass-blur)',
+            border: '1px solid var(--glass-border)',
             borderRadius: 'var(--radius-card)',
+            boxShadow: 'var(--glass-shadow)',
             display: 'flex',
             flexWrap: 'wrap',
             gap: 'var(--space-3)',

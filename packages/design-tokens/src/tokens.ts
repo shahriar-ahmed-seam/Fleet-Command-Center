@@ -4,19 +4,19 @@
  * the Driver_Status / Delivery_Status mappings in `status.ts`.
  */
 export const colors = {
-  bg: '#0F1419',
-  surface: '#1A2230',
-  surfaceAlt: '#232E40',
-  border: '#2E3A4E',
-  text: '#E8EDF4',
-  textMuted: '#9AA7B8',
-  primary: '#3B82F6',
-  primaryHover: '#2E6FD6',
-  accent: '#14B8A6',
-  success: '#22C55E',
-  warning: '#F59E0B',
-  danger: '#EF4444',
-  info: '#38BDF8',
+  bg: '#070A16',
+  surface: '#11152E',
+  surfaceAlt: '#1A2042',
+  border: '#2C3360',
+  text: '#ECEEFA',
+  textMuted: '#9AA2CC',
+  primary: '#7C84F2',
+  primaryHover: '#6A72E6',
+  accent: '#58D6F2',
+  success: '#3FE0A0',
+  warning: '#ECA64C',
+  danger: '#EF4757',
+  info: '#8FB4FB',
 } as const;
 
 export type ColorToken = keyof typeof colors;
