@@ -39,7 +39,9 @@ export function darkBasemapStyle(): StyleSpecification {
           'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_Black_Marble/default/2016-01-01/GoogleMapsCompatible_Level8/{z}/{y}/{x}.png',
         ],
         tileSize: 256,
-        maxzoom: 8,
+        // Cap source zoom low: the globe view only needs coarse tiles, and
+        // higher levels overzoom from these instead of fetching hundreds more.
+        maxzoom: 5,
         attribution: '© NASA Earth Observatory (Black Marble)',
       },
     },
@@ -57,7 +59,7 @@ export function darkBasemapStyle(): StyleSpecification {
         type: 'raster',
         source: 'nightlights',
         paint: {
-          'raster-opacity': ['interpolate', ['linear'], ['zoom'], 3, 1, 6.5, 0.9, 9, 0],
+          'raster-opacity': ['interpolate', ['linear'], ['zoom'], 3, 1, 5, 0.85, 7, 0],
           'raster-saturation': -0.15,
           'raster-contrast': 0.12,
           'raster-hue-rotate': -12,

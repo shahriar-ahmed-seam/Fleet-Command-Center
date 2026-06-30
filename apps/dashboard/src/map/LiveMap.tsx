@@ -82,9 +82,12 @@ export function LiveMap({
         attributionControl: false,
         maxPitch: 70,
         fadeDuration: 0,
-        maxTileCacheSize: 1024,
+        maxTileCacheSize: 2048,
         refreshExpiredTiles: false,
         renderWorldCopies: false,
+        // Cap the render resolution: high-DPI screens otherwise draw at 2x+,
+        // quadrupling fragments and tiles. 1.5x keeps it crisp but much faster.
+        pixelRatio: Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 1.5),
       });
     } catch {
       setFailed(true);
