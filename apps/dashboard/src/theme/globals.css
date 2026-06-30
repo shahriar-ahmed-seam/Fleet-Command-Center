@@ -21,11 +21,14 @@ body,
 
 body {
   margin: 0;
-  background-color: var(--color-bg);
+  background-color: #04060f;
   background-image:
-    radial-gradient(1100px 700px at 78% -8%, color-mix(in srgb, var(--color-primary) 22%, transparent), transparent 60%),
-    radial-gradient(900px 600px at 5% 110%, color-mix(in srgb, var(--color-accent) 16%, transparent), transparent 55%),
-    radial-gradient(700px 500px at 110% 60%, color-mix(in srgb, var(--color-info) 12%, transparent), transparent 50%);
+    radial-gradient(1100px 700px at 80% -10%, color-mix(in srgb, var(--color-primary) 16%, transparent), transparent 60%),
+    radial-gradient(900px 620px at 0% 110%, color-mix(in srgb, var(--color-accent) 12%, transparent), transparent 55%),
+    url('/space.png');
+  background-size: auto, auto, cover;
+  background-position: center, center, center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
   color: var(--color-text);
   font-family: var(--font-sans);
@@ -135,19 +138,13 @@ button {
 .fcc-starfield {
   background-color: #04060f;
   background-image:
-    url('/space.jpg'),
-    radial-gradient(1.6px 1.6px at 12% 22%, rgba(255, 255, 255, 0.95), transparent 60%),
-    radial-gradient(1.4px 1.4px at 78% 14%, rgba(205, 220, 255, 0.85), transparent 60%),
-    radial-gradient(1px 1px at 33% 67%, rgba(255, 255, 255, 0.7), transparent 60%),
-    radial-gradient(1px 1px at 64% 78%, rgba(185, 205, 255, 0.7), transparent 60%),
-    radial-gradient(1.6px 1.6px at 88% 56%, rgba(255, 255, 255, 0.85), transparent 60%),
-    radial-gradient(1px 1px at 47% 38%, rgba(255, 255, 255, 0.6), transparent 60%),
-    radial-gradient(1.2px 1.2px at 22% 84%, rgba(255, 255, 255, 0.7), transparent 60%),
-    radial-gradient(1100px 700px at 72% 18%, color-mix(in srgb, var(--color-primary) 18%, transparent), transparent 62%),
-    radial-gradient(900px 620px at 12% 96%, color-mix(in srgb, var(--color-accent) 12%, transparent), transparent 58%);
-  background-size: cover, auto, auto, auto, auto, auto, auto, auto, auto, auto;
+    url('/space.png'),
+    radial-gradient(1100px 700px at 72% 18%, color-mix(in srgb, var(--color-primary) 16%, transparent), transparent 62%),
+    radial-gradient(900px 620px at 12% 96%, color-mix(in srgb, var(--color-accent) 10%, transparent), transparent 58%);
+  background-size: cover, auto, auto;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 /* Subtle violet grade over the planet to match the brand scheme. */

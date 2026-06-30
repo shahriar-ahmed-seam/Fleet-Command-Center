@@ -81,6 +81,10 @@ export function LiveMap({
         bearing: -16,
         attributionControl: false,
         maxPitch: 70,
+        fadeDuration: 0,
+        maxTileCacheSize: 1024,
+        refreshExpiredTiles: false,
+        renderWorldCopies: false,
       });
     } catch {
       setFailed(true);

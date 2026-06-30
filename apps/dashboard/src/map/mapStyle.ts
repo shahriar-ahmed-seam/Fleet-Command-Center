@@ -24,10 +24,10 @@ export function darkBasemapStyle(): StyleSpecification {
       streets: {
         type: 'raster',
         tiles: [
-          'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
-          'https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
-          'https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
-          'https://d.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
+          'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+          'https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+          'https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+          'https://d.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
         ],
         tileSize: 256,
         attribution:
@@ -49,7 +49,7 @@ export function darkBasemapStyle(): StyleSpecification {
         id: 'streets',
         type: 'raster',
         source: 'streets',
-        paint: { 'raster-opacity': 0.95, 'raster-brightness-max': 0.85 },
+        paint: { 'raster-opacity': 0.95, 'raster-brightness-max': 0.85, 'raster-fade-duration': 0 },
       },
       {
         // City lights on top; fade out as the user zooms into street level.
@@ -61,6 +61,7 @@ export function darkBasemapStyle(): StyleSpecification {
           'raster-saturation': -0.15,
           'raster-contrast': 0.12,
           'raster-hue-rotate': -12,
+          'raster-fade-duration': 0,
         },
       },
     ],
