@@ -1,0 +1,12 @@
+services/ingestion
+services/geofence
+services/streaming
+services/optimizer
+apps/driver
+apps/customer
+.kiro
+**/__pycache__
+**/.venv
+**/.dart_tool
+**/.pytest_cache
+**/.hypothesis

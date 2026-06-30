@@ -1,0 +1,14 @@
+{
+  // Base TypeScript settings shared by the CommonJS and ESM builds. The
+  // concrete `tsconfig.cjs.json` / `tsconfig.esm.json` projects set the module
+  // system, module resolution, and output directory for each emit.
+  "compilerOptions": {
+    "target": "ES2021",
+    "declaration": true,
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"]
+}

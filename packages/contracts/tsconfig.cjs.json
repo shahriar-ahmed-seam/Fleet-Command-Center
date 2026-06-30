@@ -1,0 +1,10 @@
+{
+  // CommonJS build: emitted to dist/cjs and consumed via the package's
+  // `require` export condition (e.g. by the CommonJS management service).
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "outDir": "./dist/cjs"
+  }
+}

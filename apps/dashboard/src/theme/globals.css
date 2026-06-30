@@ -1,0 +1,98 @@
+/*
+ * Global base styles for the Dispatch Dashboard.
+ *
+ * Imports the generated design-token custom properties (the single source of
+ * truth) and applies a minimal, token-driven reset so every screen inherits the
+ * dark operations theme, brand typography, and spacing rhythm (Req 15.2).
+ */
+@import '@fleet/design-tokens/dist/tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-body);
+  line-height: var(--line-height-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-heading);
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Tabular, monospaced presentation for IDs, coordinates, and timestamps. */
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* A consistent, visible keyboard focus ring on interactive elements (Req 15.6). */
+:where(button, a, input, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-info);
+  outline-offset: 2px;
+}
+
+/* Custom scrollbars that match the operations theme. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-pill);
+}
+
+@keyframes fcc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fcc-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes fcc-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

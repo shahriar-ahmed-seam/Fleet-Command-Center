@@ -1,0 +1,10 @@
+{
+  // ESM build: emitted to dist/esm and consumed via the package's `import`
+  // export condition (e.g. by bundlers and native ESM consumers).
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "outDir": "./dist/esm"
+  }
+}

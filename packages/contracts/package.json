@@ -1,0 +1,32 @@
+{
+  "name": "@fleet/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared cross-service wire contracts: DTOs, enums, socket event types",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "node scripts/clean-dist.cjs",
+    "build": "npm run clean && tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json && node scripts/finalize-dist.cjs"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

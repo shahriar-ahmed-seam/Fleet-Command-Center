@@ -1,0 +1,18 @@
+{
+  "name": "fleet-command-center",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Logistics fleet management platform monorepo",
+  "workspaces": [
+    "packages/contracts",
+    "packages/design-tokens",
+    "services/management",
+    "apps/dashboard"
+  ],
+  "scripts": {
+    "build": "echo \"build orchestrated per-workspace\"",
+    "test": "echo \"test orchestrated per-workspace\"",
+    "vercel-build": "npm run build -w @fleet/contracts && npm run build -w @fleet/design-tokens && npm run build -w @fleet/dashboard"
+  },
+  "license": "MIT"
+}

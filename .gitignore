@@ -1,0 +1,32 @@
+# Node
+node_modules/
+dist/
+*.log
+.env
+
+# Go
+*.exe
+bin/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.hypothesis/
+
+# Flutter / Dart
+.dart_tool/
+.packages
+build/
+
+# Editor / OS
+.DS_Store
+.idea/
+
+# Vercel
+.vercel/
+
+# Flutter generated
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
