@@ -63,9 +63,9 @@ class FleetSpacing {
 /// Border-radius tokens.
 class FleetRadius {
   FleetRadius._();
-  static const double control = 8.0;
-  static const double card = 16.0;
-  static const double modal = 20.0;
+  static const double control = 0.0;
+  static const double card = 0.0;
+  static const double modal = 0.0;
   static const double pill = 9999.0;
 }
 

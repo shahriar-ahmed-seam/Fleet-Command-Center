@@ -64,6 +64,7 @@ export function LiveMap({
   const mapRef = React.useRef<MlMap | null>(null);
   const entriesRef = React.useRef<Map<string, MarkerEntry>>(new Map());
   const rafRef = React.useRef<number | null>(null);
+  const framedRef = React.useRef<string | null>(null);
   const [ready, setReady] = React.useState(false);
   const [failed, setFailed] = React.useState(false);
   const onSelectRef = React.useRef(onSelectVehicle);
@@ -94,8 +95,6 @@ export function LiveMap({
       return;
     }
     mapRef.current = map;
-    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
-    map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-left');
 
     const spin = createGlobeSpin(map, { secondsPerRevolution: 90, maxSpinZoom: 5, slowSpinZoom: 3 });
 
@@ -252,9 +251,14 @@ export function LiveMap({
     const ordered = selectedVehicleId ? windowTrace(tracePings, now ?? Date.now()) : [];
     const coordinates = ordered.map((p) => [p.lng, p.lat] as [number, number]);
     src.setData({ type: 'Feature', geometry: { type: 'LineString', coordinates }, properties: {} });
-    if (coordinates.length > 1) {
+    // Frame the trace only once when a vehicle is first selected — never on the
+    // per-second ping updates, so the user stays free to zoom and pan.
+    if (!selectedVehicleId) {
+      framedRef.current = null;
+    } else if (framedRef.current !== selectedVehicleId && coordinates.length > 1) {
       const b = boundsOf(ordered);
-      if (b) map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: 90, maxZoom: 14, duration: 700 });
+      if (b) map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: 90, maxZoom: 13, duration: 800 });
+      framedRef.current = selectedVehicleId;
     }
   }, [tracePings, selectedVehicleId, ready, now]);
 
@@ -275,9 +279,31 @@ export function LiveMap({
       <div className="fcc-starfield" aria-hidden="true" style={{ position: 'absolute', inset: 0 }} />
       <div ref={containerRef} style={{ position: 'absolute', inset: 0, background: 'transparent' }} />
       <div className="fcc-globe-tint" aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', bottom: 'var(--space-4)', right: 'var(--space-4)', zIndex: 2, display: 'flex', gap: 'var(--space-2)' }}>
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 'var(--space-4)',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 2,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 'var(--space-2)',
+        }}
+      >
         <MapPill onClick={viewGlobe} label="🌐 Globe" />
         <MapPill onClick={viewFleet} label="📍 Fleet" />
+        <span
+          style={{
+            fontSize: 10,
+            color: 'var(--color-text-muted)',
+            opacity: 0.7,
+            whiteSpace: 'nowrap',
+            marginLeft: 'var(--space-2)',
+          }}
+        >
+          © OSM · CARTO · NASA
+        </span>
       </div>
     </>
   );
@@ -286,7 +312,7 @@ export function LiveMap({
 function MapPill({ onClick, label }: { onClick: () => void; label: string }): React.ReactElement {
   return (
     <button type="button" onClick={onClick} className="glass"
-      style={{ height: 32, padding: '0 var(--space-3)', borderRadius: 'var(--radius-pill)', color: 'var(--color-text)', fontSize: 'var(--font-size-xs)', fontWeight: 600, cursor: 'pointer' }}>
+      style={{ height: 32, padding: '0 var(--space-3)', color: 'var(--color-text)', fontSize: 'var(--font-size-xs)', fontWeight: 600, cursor: 'pointer' }}>
       {label}
     </button>
   );

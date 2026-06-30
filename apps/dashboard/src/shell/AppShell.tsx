@@ -76,8 +76,8 @@ export function AppShell({
                 position: 'absolute',
                 top: 'var(--space-4)',
                 right: 'var(--space-4)',
-                width: 320,
-                maxHeight: 'calc(100% - var(--space-4) * 2)',
+                bottom: 'var(--space-4)',
+                width: 300,
                 display: 'flex',
               }}
             >

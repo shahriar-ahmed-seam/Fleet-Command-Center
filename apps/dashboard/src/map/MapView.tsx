@@ -50,6 +50,7 @@ export function MapView({
 
       {/* Floating filter controls */}
       <div
+        className="glass"
         style={{
           position: 'absolute',
           top: 'var(--space-4)',
@@ -57,12 +58,7 @@ export function MapView({
           zIndex: 2,
           display: 'flex',
           gap: 'var(--space-2)',
-          padding: 'var(--space-2)',
-          background: 'color-mix(in srgb, var(--color-surface) 88%, transparent)',
-          border: '1px solid var(--color-border)',
-          borderRadius: 'var(--radius-card)',
-          boxShadow: 'var(--shadow-md)',
-          backdropFilter: 'blur(6px)',
+          padding: 'var(--space-3)',
         }}
       >
         <label style={{ display: 'grid', gap: 4 }}>
@@ -105,6 +101,7 @@ export function MapView({
 
       {/* Status legend */}
       <div
+        className="glass"
         style={{
           position: 'absolute',
           bottom: 'var(--space-4)',
@@ -115,10 +112,6 @@ export function MapView({
           gap: 'var(--space-2)',
           maxWidth: 360,
           padding: 'var(--space-2) var(--space-3)',
-          background: 'color-mix(in srgb, var(--color-surface) 88%, transparent)',
-          border: '1px solid var(--color-border)',
-          borderRadius: 'var(--radius-card)',
-          backdropFilter: 'blur(6px)',
         }}
       >
         {DRIVER_STATUSES.map((s) => (
@@ -126,28 +119,6 @@ export function MapView({
             {s.replace(/_/g, ' ')}
           </Badge>
         ))}
-      </div>
-
-      {/* Count chip */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 'var(--space-4)',
-          right: 'var(--space-6)',
-          zIndex: 2,
-          padding: 'var(--space-2) var(--space-3)',
-          background: 'color-mix(in srgb, var(--color-surface) 88%, transparent)',
-          border: '1px solid var(--color-border)',
-          borderRadius: 'var(--radius-pill)',
-          fontSize: 'var(--font-size-xs)',
-          color: 'var(--color-text-muted)',
-          backdropFilter: 'blur(6px)',
-        }}
-      >
-        <span className="mono" style={{ color: 'var(--color-text)', fontWeight: 700 }}>
-          {shown.length}
-        </span>{' '}
-        vehicles shown
       </div>
     </div>
   );
